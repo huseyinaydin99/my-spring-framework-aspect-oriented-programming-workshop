@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="mathProxy"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces"
+			value="tr.com.huseyinaydin.sqrt.contract.SqrtCalculator" />
+		<property name="target" ref="mathTarget" />
+		<property name="interceptorNames">
+			<list>
+				<value>aroundAdvisor</value>
+<!-- 				<value>afterAdvisor</value> -->
+<!-- 				<value>beforeAdvisor</value> -->
+			</list>
+		</property>
+	</bean>
+
+	<bean id="newtonRaphsonProxy"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces"
+			value="tr.com.huseyinaydin.sqrt.contract.SqrtCalculator" />
+		<property name="target" ref="newtonRaphsonTarget" />
+		<property name="interceptorNames">
+			<list>
+<!-- 				<value>beforeAdvisor</value> -->
+<!-- 				<value>afterAdvisor</value> -->
+				<value>aroundAdvisor</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- <bean id="calculatorProxy2" -->
+	<!-- class="org.springframework.aop.framework.ProxyFactoryBean"> -->
+	<!-- <property name="target" ref="beanTarget" /> -->
+	<!-- <property name="interceptorNames"> -->
+	<!-- <list> -->
+	<!-- <value>calculatorAdvisor</value> -->
+	<!-- </list> -->
+	<!-- </property> -->
+	<!-- </bean> -->
+
+	<bean id="mathTarget"
+		class="tr.com.huseyinaydin.sqrt.impl.MathSqrtCalculator" />
+	
+	<bean id="newtonRaphsonTarget"
+		class="tr.com.huseyinaydin.sqrt.impl.NewtonRaphsonSqrtCalculator" />
+
+	<bean id="beforeAdvisor"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice" ref="beforeAdvisorBean" />
+		<property name="pattern" value=".*" />
+	</bean>
+
+	<bean id="afterAdvisor"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice" ref="afterAdvisorBean" />
+		<property name="pattern" value=".*" />
+	</bean>
+
+	<bean id="aroundAdvisor"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice" ref="aroundAdvisorBean" />
+		<property name="pattern" value=".*" />
+	</bean>
+
+	<!-- Advice classes -->
+	<bean id="beforeAdvisorBean"
+		class="tr.com.huseyinaydin.sqrt.xml.advice.BeforeAdvice" />
+	<bean id="afterAdvisorBean"
+		class="tr.com.huseyinaydin.sqrt.xml.advice.AfterAdvice" />
+	<bean id="aroundAdvisorBean"
+		class="tr.com.huseyinaydin.sqrt.xml.advice.AroundAdvice" />
+
+	<bean id="calculatorPointcut"
+		class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<property name="mappedName" value="calculateViaNewtonRaphson" />
+		<!-- <property name="mappedName" value="calculateViaMath" /> -->
+	</bean>
+
+	<bean id="calculatorAdvisor"
+		class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<!-- <property name="pointcut" ref="calculatorPointcut" /> -->
+		<property name="advice" ref="beforeAdvisorBean" />
+	</bean>
+</beans>

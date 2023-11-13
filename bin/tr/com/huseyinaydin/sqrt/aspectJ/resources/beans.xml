@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+https://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop
+https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<aop:aspectj-autoproxy />
+
+	<bean id="mathTarget"
+		class="tr.com.huseyinaydin.sqrt.impl.MathSqrtCalculator" />
+
+	<bean id="newtonRaphsonTarget"
+		class="tr.com.huseyinaydin.sqrt.impl.NewtonRaphsonSqrtCalculator" />
+
+	<bean id="counter"
+		class="tr.com.huseyinaydin.sqrt.aspectJ.domain.Counter" />
+
+	<bean id="timingAdvice"
+		class="tr.com.huseyinaydin.sqrt.aspectJ.advice.TimingAdvice" />
+
+	<bean id="timingAdviceWithParameter"
+		class="tr.com.huseyinaydin.sqrt.aspectJ.advice.TimingAdviceWithParameter" />
+
+	<bean id="log"
+		class="tr.com.huseyinaydin.sqrt.aspectJ.advice.Log" />
+
+	<bean id="negativeParameterCheckerAdvice"
+		class="tr.com.huseyinaydin.sqrt.aspectJ.advice.NegativeParameterCheckerAdvice" />
+
+	<bean id="negativeParameterExceptionAdvice"
+		class="tr.com.huseyinaydin.sqrt.aspectJ.advice.NegativeParameterExceptionAdvice" />
+
+	<!-- run1 and run2: Around advice for all methods -->
+	<!-- <aop:config> -->
+	<!-- <aop:aspect id="TimingAspect1" ref="timingAdvice"> -->
+	<!-- <aop:pointcut id="anyMethod" -->
+	<!-- expression="execution(* *(..))" /> -->
+	<!-- <aop:around pointcut-ref="anyMethod" -->
+	<!-- method="doAdvice" /> -->
+	<!-- </aop:aspect> -->
+	<!-- </aop:config> -->
+
+	<!-- run2: Around advice for all calculate(double) methods -->
+	<!-- <aop:config> -->
+	<!-- <aop:aspect id="TimingAspect2" ref="timingAdvice"> -->
+	<!-- <aop:pointcut id="calculateMethod" -->
+	<!-- expression="execution(* *.calculate(double))" /> -->
+	<!-- <aop:around pointcut-ref="calculateMethod" -->
+	<!-- method="doAdvice" /> -->
+	<!-- </aop:aspect> -->
+	<!-- </aop:config> -->
+
+	<!-- run1: Around advice for all calculate(double) methods -->
+	<!-- <aop:config> -->
+	<!-- <aop:aspect id="TimingAspect3" -->
+	<!-- ref="timingAdviceWithParameter"> -->
+	<!-- <aop:pointcut id="calculateMethod" -->
+	<!-- expression="execution(* *.calculate(double)) and args(number)" /> -->
+	<!-- <aop:around pointcut-ref="calculateMethod" -->
+	<!-- method="doAdvice" /> -->
+	<!-- </aop:aspect> -->
+	<!-- </aop:config> -->
+
+
+	<!-- run1: After returning advice only for tr.com.huseyinaydin.sqrt.impl.MathSqrtCalculator.calculate(double) 
+		method -->
+	<!-- <aop:config> -->
+	<!-- <aop:aspect id="TimingAspectForMath" ref="timingAdvice"> -->
+	<!-- <aop:pointcut id="calculateMethod" -->
+	<!-- expression="execution(* tr.com.huseyinaydin.sqrt.impl.MathSqrtCalculator.calculate(double))" 
+		/> -->
+	<!-- <aop:around pointcut-ref="calculateMethod" -->
+	<!-- method="doAdvice" /> -->
+	<!-- </aop:aspect> -->
+	<!-- </aop:config> -->
+
+	<!-- run1: After returning advice only for calculate(double) methods of 
+		tr.com.huseyinaydin.sqrt.impl. classes -->
+	<!-- <aop:config> -->
+	<!-- <aop:aspect id="TimingAspectForMath" ref="timingAdvice"> -->
+	<!-- <aop:pointcut id="calculateMethod" -->
+	<!-- expression="execution(* tr.com.huseyinaydin.sqrt.impl.*.calculate(double))" 
+		/> -->
+	<!-- <aop:around pointcut-ref="calculateMethod" -->
+	<!-- method="doAdvice" /> -->
+	<!-- </aop:aspect> -->
+	<!-- </aop:config> -->
+
+	<!-- run3: Before advice for all calculate(double) methods -->
+	<!-- <aop:config> -->
+	<!-- <aop:aspect id="NegativeParameterCheckerAspect" -->
+	<!-- ref="negativeParameterCheckerAdvice"> -->
+	<!-- <aop:pointcut id="calculateMethod" -->
+	<!-- expression="execution(* *.calculate(double)) -->
+	<!-- and args(number)" /> -->
+	<!-- <aop:before pointcut-ref="calculateMethod" -->
+	<!-- method="doAdvice" /> -->
+	<!-- </aop:aspect> -->
+	<!-- </aop:config> -->
+
+	<!-- run3: After throwing advice for all calculate(double) methods -->
+	<!-- Let SqrtCalculator objects throw NegativeParameterException -->
+	<!-- <aop:config> -->
+	<!-- <aop:aspect id="NegativeParameterExceptionAspect1" -->
+	<!-- ref="negativeParameterExceptionAdvice"> -->
+	<!-- <aop:pointcut id="anyMethod" -->
+	<!-- expression="execution(* *.calculate(..))" /> -->
+	<!-- <aop:after-throwing pointcut-ref="anyMethod" -->
+	<!-- throwing="negativeParameterException" method="handleException" /> -->
+	<!-- </aop:aspect> -->
+	<!-- </aop:config> -->
+
+	<!-- run3: Use following two aspects together. -->
+	<!-- Let SqrtCalculator objects not throw NegativeParameterException -->
+<!-- 	<aop:config> -->
+<!-- 		<aop:aspect id="NegativeParameterExceptionAspect2" -->
+<!-- 			ref="negativeParameterExceptionAdvice"> -->
+<!-- 			<aop:pointcut id="anyMethod" -->
+<!-- 				expression="execution(* *(..))" /> -->
+<!-- 			<aop:after-throwing pointcut-ref="anyMethod" -->
+<!-- 				throwing="negativeParameterException" method="handleException" /> -->
+<!-- 		</aop:aspect> -->
+<!-- 	</aop:config> -->
+
+<!-- 	<aop:config> -->
+<!-- 		<aop:aspect id="NegativeParameterCheckerAspect3" -->
+<!-- 			ref="negativeParameterCheckerAdvice"> -->
+<!-- 			<aop:pointcut id="calculateMethod" -->
+<!-- 				expression="execution(* *.calculate(double)) and args(number)" /> -->
+<!-- 			<aop:before pointcut-ref="calculateMethod" -->
+<!-- 				method="doAdvice" /> -->
+<!-- 		</aop:aspect> -->
+<!-- 	</aop:config> -->
+
+	<!-- run1: After returning advice for all calculate(double) methods -->
+	<aop:config>
+		<aop:aspect id="LogAspect" ref="log">
+			<aop:pointcut id="calculateMethod"
+				expression="execution(* *.calculate(double)) and args(number)" />
+			<aop:after-returning
+				pointcut-ref="calculateMethod" method="doAdvice" returning="result" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>
